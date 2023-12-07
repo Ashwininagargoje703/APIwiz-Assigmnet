@@ -105,7 +105,7 @@ export default function Header({
       <div
         style={{
           position: "relative",
-          width: "200px",
+          width: isMobile ? "100%" : "200px",
           marginLeft: "10px",
         }}
       >
