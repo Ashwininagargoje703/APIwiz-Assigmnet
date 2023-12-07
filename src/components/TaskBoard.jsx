@@ -50,7 +50,10 @@ export default function TaskBoard({ allTaks }) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (draggedItem && draggedFromBoard !== toBoard) {
+    if (
+      draggedItem
+      // && draggedFromBoard !== toBoard
+    ) {
       const updatedBoards = { ...tasks };
 
       updatedBoards[draggedFromBoard] = updatedBoards[draggedFromBoard].filter(
@@ -89,23 +92,26 @@ export default function TaskBoard({ allTaks }) {
     }
   };
   const isMobile = useMediaQuery("(max-width:740px)");
-
   return (
     <div style={{ display: isMobile ? "grid" : "flex" }}>
       {Object.keys(tasks).map((boardName, ind) => (
         <div
           key={ind}
           onDragOver={handleDragOver}
-          onDrop={(e) => {
-            e.stopPropagation();
-            tasks[boardName].length === 0 && handleDrop(e, boardName);
-          }}
+          onTouchMove={handleDragOver}
+          onDrop={(e) =>
+            tasks[boardName].length === 0 && handleDrop(e, boardName)
+          }
+          onTouchEnd={(e) =>
+            tasks[boardName].length === 0 && handleDrop(e, boardName)
+          }
           style={{
             flex: 1,
             margin: isMobile ? "" : "8px",
             minWidth: isMobile ? "90%" : "16.8rem",
             backgroundColor: "#f3f3f3",
             padding: 8,
+            borderRadius: 8,
           }}
         >
           <h3

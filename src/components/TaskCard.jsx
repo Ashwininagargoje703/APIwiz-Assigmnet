@@ -1,4 +1,4 @@
-import { Button, Chip, useMediaQuery } from "@mui/material";
+import { Card, Chip } from "@mui/material";
 import React from "react";
 
 export default function TaskCard({
@@ -9,8 +9,6 @@ export default function TaskCard({
   handleDrop,
 }) {
   const getStatusIcon = (status) => {
-    const isMobile = useMediaQuery("(max-width:740px)");
-
     switch (status) {
       case "Urgent":
         return (
@@ -89,23 +87,22 @@ export default function TaskCard({
   };
 
   return (
-    <div
+    <Card
       key={item.id}
       draggable
       onDragStart={(e) => handleDragStart(e, item, boardName)}
-      onDrop={(e) => {
-        e.stopPropagation();
-        handleDrop(e, boardName, item);
-      }}
+      onTouchStart={(e) => handleDragStart(e, item, boardName)}
+      onDrop={(e) => handleDrop(e, boardName, item)}
+      onTouchEnd={(e) => handleDrop(e, boardName, item)}
       style={{
         border: "1px solid #ccc",
-        borderRadius: 8,
         marginBottom: "8px",
         backgroundColor: draggedItem === item ? "#e1d8d8" : "white",
         position: "relative",
+        borderRadius: 8,
       }}
     >
-      <div style={{ textAlign: "left", padding: 8 }}>
+      <div style={{ textAlign: "left", padding: 8, paddingLeft: 15 }}>
         <h4>{item.name}</h4>
         <p>{item.assignee}</p>
         <p>
@@ -117,8 +114,7 @@ export default function TaskCard({
           <Chip label={item?.endDate} />
         </p>
       </div>
-
       {getStatusIcon(item.priority)}
-    </div>
+    </Card>
   );
 }
