@@ -104,7 +104,11 @@ function App() {
   };
   const isMobile = useMediaQuery("(max-width:740px)");
   return (
-    <div>
+    <div
+      style={{
+        backgroundColor: "white",
+      }}
+    >
       <Sidebar />
       <Navbar />
       <Divider />
