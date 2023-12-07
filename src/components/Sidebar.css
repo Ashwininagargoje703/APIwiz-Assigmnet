@@ -47,13 +47,3 @@ Button:focus {
 }
 
 /* ===================NAv============================== */
-
-/* Navbar.css */
-
-/* Mobile Styles */
-@media screen and (max-width: 768px) {
-  .navbar-link {
-    font-size: 14px; /* Change font size for mobile */
-    /* Add other mobile-specific styles if needed */
-  }
-}

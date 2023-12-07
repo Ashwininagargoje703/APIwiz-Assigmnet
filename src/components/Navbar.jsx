@@ -146,7 +146,7 @@ const Navbar = () => {
             fontWeight: 500,
           }}
         >
-          Timesheets
+          {isMobile ? "" : "Timesheets"}
         </Link>
         <Link
           to="/files"
