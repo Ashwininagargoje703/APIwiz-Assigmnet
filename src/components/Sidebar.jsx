@@ -99,7 +99,7 @@ const Sidebar = () => {
 
           <div className="avatar-bottom">
             <img
-              src="https://i.ibb.co/sampleimage.jpg" // Replace with your avatar image URL
+              src="https://cdn.wallpapersafari.com/15/55/Jh0ZKD.jpg" // Replace with your avatar image URL
               alt="avatar"
               style={{
                 width: "40px",
