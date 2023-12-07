@@ -43,8 +43,8 @@ const Navbar = () => {
           style={{
             color: "#000000",
             textDecoration: "none",
-            fontSize: isMobile ? 16 : 22,
-            fontWeight: 500,
+            fontSize: isMobile ? 14 : 22,
+            fontWeight: isMobile ? 700 : 500,
             width: isMobile ? 300 : "",
           }}
         >
