@@ -140,6 +140,8 @@ function App() {
                 display: "flex",
                 alignItems: "center",
                 height: 40,
+                marginTop: isMobile ? "10px" : "",
+                marginBottom: isMobile ? "10px" : "",
               }}
             >
               Metrics <IoMdArrowDropdown />

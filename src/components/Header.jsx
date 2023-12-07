@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import FilterSelect from "./FilterSelect";
 import { RiSearchLine } from "react-icons/ri";
 import { FaFilter } from "react-icons/fa";
+import { useMediaQuery } from "@mui/material";
 
 export default function Header({
   allTasks,
@@ -22,6 +23,7 @@ export default function Header({
     return temp;
   };
   const [showFilter, setShowFilter] = useState(false);
+  const isMobile = useMediaQuery("(max-width:740px)");
 
   return (
     <div

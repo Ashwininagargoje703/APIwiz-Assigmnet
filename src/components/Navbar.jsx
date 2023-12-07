@@ -12,6 +12,7 @@ const Navbar = () => {
     <div
       style={{
         marginLeft: isMobile ? 40 : 50,
+        width: "90%",
       }}
     >
       <nav
@@ -44,6 +45,7 @@ const Navbar = () => {
             textDecoration: "none",
             fontSize: isMobile ? 16 : 22,
             fontWeight: 500,
+            width: isMobile ? 300 : "",
           }}
         >
           Kanban Project
