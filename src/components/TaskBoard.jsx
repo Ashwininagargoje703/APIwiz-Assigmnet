@@ -108,7 +108,7 @@ export default function TaskBoard({ allTaks }) {
           style={{
             flex: 1,
             margin: isMobile ? "" : "8px",
-            minWidth: isMobile ? "90%" : "16.8rem",
+            minWidth: isMobile ? "100%" : "16.8rem",
             backgroundColor: "#f3f3f3",
             padding: 8,
             borderRadius: 8,

@@ -110,14 +110,15 @@ function App() {
       <Divider />
       <div
         style={{
-          marginLeft: isMobile ? 30 : 50,
+          marginLeft: isMobile ? 30 : 40,
         }}
       >
         <div
           style={{
-            display: "flex",
+            display: isMobile ? "grid" : "flex",
             justifyContent: "space-between",
             marginTop: 10,
+            marginLeft: isMobile ? "" : 8,
           }}
         >
           <Header

@@ -11,7 +11,6 @@ const Navbar = () => {
   return (
     <div
       style={{
-        width: "100%",
         marginLeft: isMobile ? 40 : 50,
       }}
     >
@@ -111,7 +110,8 @@ const Navbar = () => {
           display: "flex",
           alignItems: "center",
           gap: isMobile ? 10 : 20,
-          padding: "10px ",
+          padding: "10px",
+          paddingLeft: 1,
           backgroundColor: "#ffffff",
         }}
       >
