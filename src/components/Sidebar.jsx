@@ -108,7 +108,7 @@ const Sidebar = () => {
                 margin: "10px",
               }}
             />
-            <span style={{ color: "#fff" }}>John Doe</span>
+            <span style={{ color: "#fff" }}>Ash</span>
           </div>
         </ul>
       </div>

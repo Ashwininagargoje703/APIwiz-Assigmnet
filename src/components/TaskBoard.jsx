@@ -91,27 +91,49 @@ export default function TaskBoard({ allTaks }) {
         break;
     }
   };
+
+  const handleTouchStart = (e, boardName) => {
+    e.preventDefault();
+    const touchedItemId = e.target.getAttribute("data-id");
+    const item = tasks[boardName].find((item) => item.id === touchedItemId);
+    if (item) {
+      setDraggedItem(item);
+      setDraggedFromBoard(boardName);
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    // Implement touch move behavior if needed
+  };
+
+  const handleTouchEnd = (e, boardName) => {
+    e.preventDefault();
+    if (draggedItem) {
+      handleDrop(e, boardName);
+    }
+  };
   const isMobile = useMediaQuery("(max-width:740px)");
+
   return (
     <div style={{ display: isMobile ? "grid" : "flex" }}>
       {Object.keys(tasks).map((boardName, ind) => (
         <div
           key={ind}
           onDragOver={handleDragOver}
-          onTouchMove={handleDragOver}
-          onDrop={(e) =>
-            tasks[boardName].length === 0 && handleDrop(e, boardName)
-          }
-          onTouchEnd={(e) =>
-            tasks[boardName].length === 0 && handleDrop(e, boardName)
-          }
+          onDrop={(e) => {
+            e.stopPropagation();
+            tasks[boardName].length === 0 && handleDrop(e, boardName);
+          }}
+          onTouchStart={(e) => handleTouchStart(e, boardName)}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={(e) => handleTouchEnd(e, boardName)}
           style={{
             flex: 1,
             margin: isMobile ? "" : "8px",
-            minWidth: isMobile ? "100%" : "16.8rem",
+            minWidth: isMobile ? "90%" : "16.8rem",
             backgroundColor: "#f3f3f3",
             padding: 8,
-            borderRadius: 8,
           }}
         >
           <h3
