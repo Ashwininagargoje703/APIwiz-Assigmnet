@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import TaskCard from "./components/TaskCard";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import { FaFilter } from "react-icons/fa";
+import TaskBoard from "./components/TaskBoard";
+import { RiSearchLine } from "react-icons/ri";
+import { Divider } from "@mui/material";
 
 function App() {
-  const [tasks, setTaks] = useState({
-    Ready: [],
-    "In Progress": [],
-    Testing: [],
-    Done: [],
+  const [allTasks, setAllTasks] = useState([]);
+  const [search, setSearch] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+  const [filterHandler, setFilterHandler] = useState({
+    assignee: "",
+    severty: "",
+    startDate: "",
+    endDate: "",
   });
-  const [draggedItem, setDraggedItem] = useState(null);
-  const [draggedFromBoard, setDraggedFromBoard] = useState(null);
+
+  document.title = "Task Board";
 
   const fetchTaskData = async () => {
     try {
@@ -20,24 +28,8 @@ function App() {
         },
       });
       const data = await res.json();
-
-      let temp = {
-        Ready: [],
-        "In Progress": [],
-        Testing: [],
-        Done: [],
-      };
-
-      const tempData = {};
-
-      data.forEach((item) => {
-        if (item.status !== "") {
-          tempData[item.status] = [...(tempData[item.status] || []), item];
-        }
-      });
-
-      temp = { ...temp, ...tempData };
-      setTaks(temp);
+      setAllTasks(data);
+      console.log("data", data);
     } catch (e) {
       console.log("something went wrong", e.message);
     }
@@ -47,87 +39,297 @@ function App() {
     fetchTaskData();
   }, []);
 
-  const handleDragStart = (e, item, fromBoard) => {
-    setDraggedItem(item);
-    setDraggedFromBoard(fromBoard);
+  const groupByAssignee = (data) => {
+    let temp = [];
+
+    data.forEach((item) => {
+      if (!temp.includes(item.assignee) && item.assignee !== "") {
+        temp.push(item.assignee);
+      }
+    });
+
+    return temp;
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
+  const groupBySeverty = (data) => {
+    let temp = [];
+
+    data.forEach((item) => {
+      if (!temp.includes(item.priority) && item.priority !== "") {
+        temp.push(item.priority);
+      }
+    });
+
+    return temp;
   };
 
-  const handleDrop = (e, toBoard) => {
-    e.preventDefault();
+  const groupByStartDate = (data) => {
+    let temp = [];
 
-    if (draggedItem && draggedFromBoard !== toBoard) {
-      // Clone the boards object to avoid directly mutating the state
-      const updatedBoards = { ...tasks };
+    data.forEach((item) => {
+      if (!temp.includes(item.startDate) && item.startDate !== "") {
+        temp.push(item.startDate);
+      }
+    });
 
-      // Remove the item from the draggedFromBoard
-      updatedBoards[draggedFromBoard] = updatedBoards[draggedFromBoard].filter(
-        (item) => item !== draggedItem
-      );
+    return temp;
+  };
 
-      // Add the item to the toBoard
-      updatedBoards[toBoard] = [...updatedBoards[toBoard], draggedItem];
+  const groupByEndDate = (data) => {
+    let temp = [];
 
-      setTaks(updatedBoards);
-      setDraggedItem(null);
-      setDraggedFromBoard(null);
+    data.forEach((item) => {
+      if (!temp.includes(item.endDate) && item.endDate !== "") {
+        temp.push(item.endDate);
+      }
+    });
+
+    return temp;
+  };
+
+  const filterAllData = (arr) => {
+    let temp = [...arr];
+
+    if (filterHandler.assignee !== "") {
+      temp = temp.filter((item) => item.assignee === filterHandler.assignee);
     }
+
+    if (filterHandler.severty !== "") {
+      temp = temp.filter((item) => item.priority === filterHandler.severty);
+    }
+
+    if (filterHandler.startDate !== "") {
+      temp = temp.filter((item) => item.startDate === filterHandler.startDate);
+    }
+
+    if (filterHandler.endDate !== "") {
+      temp = temp.filter((item) => item.endDate === filterHandler.endDate);
+    }
+
+    return temp;
   };
 
-  const getColor = (boardName) => {
-    switch (boardName) {
-      case "Ready":
-        return "skyblue";
-      case "In Progress":
-        return "orange";
-      case "Testing":
-        return "yellow";
-      case "Done":
-        return "Green";
+  const handleAssigneeSelect = (e) => {
+    const selectedValue = e.target.value;
+    setFilterHandler((prev) => ({
+      ...prev,
+      assignee: selectedValue,
+    }));
+  };
 
-      default:
-        break;
-    }
+  const handleSeveritySelect = (e) => {
+    const selectedValue = e.target.value;
+    setFilterHandler((prev) => ({
+      ...prev,
+      severty: selectedValue,
+    }));
+  };
+
+  const handleStartDateSelect = (e) => {
+    const selectedValue = e.target.value;
+    setFilterHandler((prev) => ({
+      ...prev,
+      startDate: selectedValue,
+    }));
+  };
+
+  const handleEndDateSelect = (e) => {
+    const selectedValue = e.target.value;
+    setFilterHandler((prev) => ({
+      ...prev,
+      endDate: selectedValue,
+    }));
+  };
+
+  const searchData = (data, searchTerm) => {
+    if (searchTerm === "") return data;
+
+    const searchKeys = [
+      "assignee",
+      "effortSpent",
+      "endDate",
+      "name",
+      "priority",
+      "startDate",
+      "status",
+      "summary",
+      "type",
+    ];
+    let tempData = [...data];
+
+    const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+    const filteredData = tempData.filter((item) => {
+      return searchKeys.some((key) => {
+        const value = item[key];
+        return (
+          value && value.toString().toLowerCase().includes(lowerCaseSearchTerm)
+        );
+      });
+    });
+
+    return filteredData;
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      {Object.keys(tasks).map((boardName) => (
-        <>
-          <div
-            key={boardName}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, boardName)}
-            style={{
-              flex: 1,
-              padding: "8px",
-              marginRight: "8px",
-              minWidth: "20rem",
-            }}
-          >
-            <h3
-              style={{
-                marginBottom: "3rem",
-                borderBottom: `0.25rem ${getColor(boardName)} solid`,
-                borderRadius: "5px",
-              }}
-            >{`${boardName}(${tasks[boardName].length})`}</h3>
-            {tasks[boardName].map((item) => (
-              <TaskCard
-                key={item.id}
-                item={item}
-                boardName={boardName}
-                draggedItem={draggedItem}
-                handleDragStart={handleDragStart}
-              />
-            ))}
+    <>
+      <div style={{ display: "flex" }}>
+        <Sidebar />
+        <div
+          style={{
+            marginLeft: 50,
+          }}
+        >
+          <Navbar />
+          <Divider />
+          <div>
+            <div style={{ marginBottom: "2rem", marginTop: 5 }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  paddingTop: 15,
+                  padding: 5,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.25rem",
+                  }}
+                >
+                  <button
+                    onClick={() => setShowFilter(!showFilter)}
+                    style={{
+                      padding: "8px",
+                      borderRadius: "5px",
+                      border: "1px solid #ccc",
+                      backgroundColor: "#f9f9f9",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FaFilter style={{ marginRight: "5px" }} /> Filter
+                  </button>
+                </div>
+                <div
+                  style={{
+                    position: "relative",
+                    width: "200px",
+                    marginLeft: "10px",
+                  }}
+                >
+                  <input
+                    type="search"
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
+                    placeholder="Search..."
+                    style={{
+                      padding: "12px",
+                      borderRadius: "5px",
+                      border: "1px solid #ccc",
+                      height: "40px", // Adjust height here
+                      width: "100%",
+                      paddingRight: "30px", // Space for the icon
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      right: "8px",
+                      color: "#888",
+                    }}
+                  >
+                    <RiSearchLine />
+                  </div>
+                </div>
+              </div>
+
+              {/* Filter options */}
+              {showFilter && (
+                <div
+                  style={{
+                    marginTop: "10px",
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    backgroundColor: "#f9f9f9",
+                    display: "grid",
+                    maxWidth: 250,
+                    gap: 10,
+                    zIndex: 99999,
+                    position: "absolute",
+                  }}
+                >
+                  <select
+                    className="selectInput"
+                    onChange={handleAssigneeSelect}
+                    value={filterHandler.assignee}
+                    name="assignee"
+                    id="assignee-select"
+                  >
+                    <option value="">--Choose Assignee--</option>
+                    {groupByAssignee(allTasks).map((item, idx) => (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="selectInput"
+                    onChange={handleSeveritySelect}
+                    value={filterHandler.severty}
+                    name="severity"
+                    id="severity-select"
+                  >
+                    <option value="">--Choose Severty--</option>
+                    {groupBySeverty(allTasks).map((item, idx) => (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="selectInput"
+                    onChange={handleStartDateSelect}
+                    value={filterHandler.startDate}
+                    name="startdate"
+                    id="start-date-select"
+                  >
+                    <option value="">--Choose start date--</option>
+                    {groupByStartDate(allTasks).map((item, idx) => (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className="selectInput"
+                    onChange={handleEndDateSelect}
+                    value={filterHandler.endDate}
+                    name="enddate"
+                    id="end-date-select"
+                  >
+                    <option value="">--Choose end date--</option>
+                    {groupByEndDate(allTasks).map((item, idx) => (
+                      <option key={idx} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+            <TaskBoard allTaks={filterAllData(searchData(allTasks, search))} />
           </div>
-        </>
-      ))}
-    </div>
+        </div>
+      </div>
+    </>
   );
 }
 

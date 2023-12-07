@@ -1,3 +1,4 @@
+import { Button, Chip } from "@mui/material";
 import React from "react";
 
 export default function TaskCard({
@@ -5,6 +6,7 @@ export default function TaskCard({
   boardName,
   draggedItem,
   handleDragStart,
+  handleDrop,
 }) {
   const getStatusIcon = (status) => {
     switch (status) {
@@ -89,16 +91,31 @@ export default function TaskCard({
       key={item.id}
       draggable
       onDragStart={(e) => handleDragStart(e, item, boardName)}
+      onDrop={(e) => {
+        e.stopPropagation();
+        handleDrop(e, boardName, item);
+      }}
       style={{
         border: "1px solid #ccc",
-        padding: "8px",
+        borderRadius: 8,
         marginBottom: "8px",
         backgroundColor: draggedItem === item ? "#e1d8d8" : "white",
         position: "relative",
       }}
     >
-      <h4>{item.name}</h4>
-      <p>{item.assignee}</p>
+      <div style={{ textAlign: "left", padding: 8 }}>
+        <h4>{item.name}</h4>
+        <p>{item.assignee}</p>
+        <p>
+          <strong>Start Date : </strong>
+          <Chip label={item?.startDate} />
+        </p>
+        <p>
+          <strong>End Date : </strong>
+          <Chip label={item?.endDate} />
+        </p>
+      </div>
+
       {getStatusIcon(item.priority)}
     </div>
   );

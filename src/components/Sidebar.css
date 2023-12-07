@@ -1,0 +1,49 @@
+.sidebar {
+  width: 70px;
+  height: 100vhs;
+  background-color: #131724;
+  color: #e1dfea;
+  position: absolute;
+  left: 0; /* Align the sidebar to the left */
+  top: 0;
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.toggle-button {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.menu-items ul {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-items ul li {
+  padding: 10px;
+}
+
+.menu-items ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+
+Button:focus {
+  outline: none;
+  border-color: transparent; /* Set the border color to transparent */
+}
+
+/* ===================NAv============================== */
