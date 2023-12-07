@@ -146,6 +146,7 @@ function App() {
                 height: 40,
                 marginTop: isMobile ? "10px" : "",
                 marginBottom: isMobile ? "10px" : "",
+                marginRight: 8,
               }}
             >
               Metrics <IoMdArrowDropdown />

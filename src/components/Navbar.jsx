@@ -21,6 +21,7 @@ const Navbar = () => {
           gap: 10,
           paddingBottom: 10,
           backgroundColor: "white",
+          marginLeft: "-10px",
         }}
       >
         {/* HiOutlineArrowLeft Button */}
@@ -43,9 +44,8 @@ const Navbar = () => {
           style={{
             color: "#000000",
             textDecoration: "none",
-            fontSize: isMobile ? 14 : 22,
+            fontSize: isMobile ? 16 : 22,
             fontWeight: isMobile ? 700 : 500,
-            width: isMobile ? 300 : "",
           }}
         >
           Kanban Project
@@ -59,6 +59,7 @@ const Navbar = () => {
             backgroundColor: "#04ccad",
             color: "white",
             marginTop: -5,
+            display: isMobile ? "none" : "", // Hide on mobile
           }}
         />
 
@@ -114,6 +115,7 @@ const Navbar = () => {
           gap: isMobile ? 10 : 20,
           padding: "10px",
           paddingLeft: 1,
+          marginLeft: "-10px",
           backgroundColor: "#ffffff",
         }}
       >
