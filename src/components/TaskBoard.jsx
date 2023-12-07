@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import TaskCard from "./TaskCard";
+import { useMediaQuery } from "@mui/material";
 
 export default function TaskBoard({ allTaks }) {
   const [tasks, setTaks] = useState({
@@ -87,9 +88,10 @@ export default function TaskBoard({ allTaks }) {
         break;
     }
   };
+  const isMobile = useMediaQuery("(max-width:740px)");
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: isMobile ? "grid" : "flex" }}>
       {Object.keys(tasks).map((boardName, ind) => (
         <div
           key={ind}

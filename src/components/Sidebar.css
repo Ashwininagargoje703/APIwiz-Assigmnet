@@ -1,8 +1,8 @@
 .sidebar {
-  width: 70px;
-  height: 100vhs;
+  width: 60px;
+  height: 100vh;
   background-color: #131724;
-  color: #e1dfea;
+  color: #58585a;
   position: absolute;
   left: 0; /* Align the sidebar to the left */
   top: 0;
@@ -36,7 +36,7 @@
 }
 
 .menu-items ul li a {
-  color: #fff;
+  color: #71717e;
   text-decoration: none;
   display: block;
 }
@@ -47,3 +47,13 @@ Button:focus {
 }
 
 /* ===================NAv============================== */
+
+/* Navbar.css */
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  .navbar-link {
+    font-size: 14px; /* Change font size for mobile */
+    /* Add other mobile-specific styles if needed */
+  }
+}

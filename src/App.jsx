@@ -5,7 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { FaFilter } from "react-icons/fa";
 import TaskBoard from "./components/TaskBoard";
 import { RiSearchLine } from "react-icons/ri";
-import { Divider } from "@mui/material";
+import { Divider, useMediaQuery } from "@mui/material";
 
 function App() {
   const [allTasks, setAllTasks] = useState([]);
@@ -170,19 +170,20 @@ function App() {
 
     return filteredData;
   };
+  const isMobile = useMediaQuery("(max-width:740px)");
 
   return (
     <>
       <div style={{ display: "flex" }}>
         <Sidebar />
-        <div
-          style={{
-            marginLeft: 50,
-          }}
-        >
+        <div>
           <Navbar />
           <Divider />
-          <div>
+          <div
+            style={{
+              marginLeft: isMobile ? 30 : 50,
+            }}
+          >
             <div style={{ marginBottom: "2rem", marginTop: 5 }}>
               <div
                 style={{
@@ -249,7 +250,6 @@ function App() {
                 </div>
               </div>
 
-              {/* Filter options */}
               {showFilter && (
                 <div
                   style={{

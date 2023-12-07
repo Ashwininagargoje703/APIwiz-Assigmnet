@@ -13,6 +13,7 @@ import { LuWallet } from "react-icons/lu";
 import { FiCloudDrizzle } from "react-icons/fi";
 import { FiCamera } from "react-icons/fi";
 import { FiTool } from "react-icons/fi";
+import { Divider } from "@mui/material";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(false);
@@ -33,6 +34,7 @@ const Sidebar = () => {
           }}
         />
       </div>
+      <Divider color={"#71717e"} />
       <div className="menu-items">
         <ul>
           <li>
@@ -94,6 +96,20 @@ const Sidebar = () => {
               <FiTool fontSize={22} />
             </a>
           </li>
+
+          <div className="avatar-bottom">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5Y2QpQxCOJXoRXZ9vGj9gr0NZsrZhqRVbGQ&usqp=CAU" // Replace with your avatar image URL
+              alt="avatar"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                margin: "10px",
+              }}
+            />
+            <span style={{ color: "#fff" }}>John Doe</span>
+          </div>
         </ul>
       </div>
     </div>
